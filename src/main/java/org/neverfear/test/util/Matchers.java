@@ -1,4 +1,4 @@
-package org.neverfear.util;
+package org.neverfear.test.util;
 
 import static java.util.Arrays.asList;
 

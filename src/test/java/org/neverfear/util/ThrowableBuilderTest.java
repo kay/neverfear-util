@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.neverfear.util.Matchers.suppressed;
+import static org.neverfear.test.util.Matchers.suppressed;
 
 import java.io.IOException;
 

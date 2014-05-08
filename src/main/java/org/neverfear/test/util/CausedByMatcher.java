@@ -1,4 +1,4 @@
-package org.neverfear.util;
+package org.neverfear.test.util;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
