@@ -119,4 +119,10 @@ public class TimeDeviceTest {
 		final long actual = this.subject.read(TimeUnit.MILLISECONDS);
 		assertEquals(TIME_IN_SECONDS * 1000, actual);
 	}
+
+	@Test
+	public void givenTimeDevice_whenReadAsSameUnits_expectTimeRepresentedAsSeconds() {
+		final long actual = this.subject.read(TimeUnit.SECONDS);
+		assertEquals(TIME_IN_SECONDS, actual);
+	}
 }

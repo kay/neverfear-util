@@ -42,6 +42,10 @@ public abstract class TimeDevice {
 	}
 
 	public long read(final TimeUnit asUnit) {
-		return asUnit.convert(read(), this.timeUnit);
+		if (asUnit == this.timeUnit) {
+			return read();
+		} else {
+			return asUnit.convert(read(), this.timeUnit);
+		}
 	}
 }
