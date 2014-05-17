@@ -71,4 +71,11 @@ public class ThrowableBuilderTest {
 
 		this.builder.throwIfSet();
 	}
+
+	@Test
+	public void givenAdded_whenClear_expectExceptionUnset() {
+		this.builder.add(EX1);
+		this.builder.clear();
+		assertNull(this.builder.get());
+	}
 }
