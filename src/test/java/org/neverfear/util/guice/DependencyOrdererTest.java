@@ -17,12 +17,12 @@ package org.neverfear.util.guice;
 
 import static java.lang.System.out;
 import static org.junit.Assert.assertThat;
+import static org.neverfear.test.util.Matchers.isBefore;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.neverfear.matcher.IsBefore;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
@@ -166,11 +166,6 @@ public class DependencyOrdererTest {
 		assertThat(depthFirstKeys, isBefore(KEY_D, KEY_C));
 
 		assertThat(depthFirstKeys, isBefore(KEY_A, KEY_ROOT));
-	}
-
-	private <T> IsBefore<T> isBefore(final T firstValue, final T secondValue) {
-		return new IsBefore<>(firstValue,
-				secondValue);
 	}
 
 	@Test
