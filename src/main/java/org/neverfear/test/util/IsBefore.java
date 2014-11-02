@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.neverfear.matcher;
+package org.neverfear.test.util;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 

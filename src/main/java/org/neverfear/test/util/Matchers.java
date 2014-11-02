@@ -17,4 +17,9 @@ public final class Matchers {
 	public static SuppressedMatcher suppressed(final Throwable... suppressed) {
 		return new SuppressedMatcher(new HashSet<Throwable>(asList(suppressed)));
 	}
+
+	public static <T> IsBefore<T> isBefore(final T firstValue, final T secondValue) {
+		return new IsBefore<T>(firstValue,
+				secondValue);
+	}
 }
