@@ -15,7 +15,6 @@
  */
 package org.neverfear.util.guice;
 
-import static java.lang.System.out;
 import static org.junit.Assert.assertThat;
 import static org.neverfear.test.util.Matchers.isBefore;
 
@@ -166,18 +165,5 @@ public class DependencyOrdererTest {
 		assertThat(depthFirstKeys, isBefore(KEY_D, KEY_C));
 
 		assertThat(depthFirstKeys, isBefore(KEY_A, KEY_ROOT));
-	}
-
-	@Test
-	public void test() {
-		final Root_UsesMemberInjection instance = this.injector.getInstance(Root_UsesMemberInjection.class);
-
-		for (final GuiceDependency dependency : this.subject.depthFirst()) {
-			out.println(dependency.getKey()
-					.getTypeLiteral());
-		}
-
-		out.println();
-		final GuiceDependency root = this.subject.get(Key.get(Root_UsesMemberInjection.class));
 	}
 }
