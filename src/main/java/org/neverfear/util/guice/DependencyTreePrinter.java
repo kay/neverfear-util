@@ -16,6 +16,7 @@
 package org.neverfear.util.guice;
 
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
@@ -29,15 +30,21 @@ import org.neverfear.util.Dependant;
  */
 public class DependencyTreePrinter {
 
-	public <T extends Dependant<T>> void print(final Dependant<T> root, final PrintStream writer) {
+	public <T extends Dependant<T>> void print(final PrintStream writer, final T root) {
+		print(writer, Arrays.asList(root));
+	}
+
+	public <T extends Dependant<T>> void print(final PrintStream writer, final Collection<T> roots) {
 		final LinkedList<Boolean> parents = new LinkedList<Boolean>();
-		print(root, writer, parents, 0, 1);
+		for (final T root : roots) {
+			print(root, writer, parents, 0, 1);
+		}
 	}
 
 	private static <T extends Dependant<T>> void print(final Dependant<T> root, final PrintStream writer,
 			final Deque<Boolean> parents,
 			final int childIndex, final int childCount) {
-		// final boolean last = childIndex + 1 == childCount;
+		final boolean last = childIndex + 1 == childCount;
 		final boolean siblings = childCount > 1;
 
 		for (final Boolean line : parents) {
@@ -60,7 +67,7 @@ public class DependencyTreePrinter {
 
 		final Collection<T> dependencies = root.dependencies();
 		final Iterator<T> iterator = dependencies.iterator();
-		parents.addLast(siblings);
+		parents.addLast(siblings && !last);
 
 		int index = 0;
 		while (iterator.hasNext()) {

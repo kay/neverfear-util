@@ -179,7 +179,5 @@ public class DependencyOrdererTest {
 
 		out.println();
 		final GuiceDependency root = this.subject.get(Key.get(Root_UsesMemberInjection.class));
-		final DependencyTreePrinter printer = new DependencyTreePrinter();
-		printer.print(root, out);
 	}
 }
