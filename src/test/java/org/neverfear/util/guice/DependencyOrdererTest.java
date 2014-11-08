@@ -21,7 +21,9 @@ import static org.neverfear.test.util.Matchers.isBefore;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
@@ -33,11 +35,13 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
+import com.google.inject.Scopes;
 
 /**
  * @author doug@neverfear.org
  * 
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DependencyOrdererTest {
 
 	// Uses member injection
@@ -109,7 +113,7 @@ public class DependencyOrdererTest {
 
 		@Override
 		protected void configure() {
-			bind(A_ManyUsesConstructorInjection.class);
+			bind(A_ManyUsesConstructorInjection.class).in(Scopes.SINGLETON);
 			bind(C_UsesConstructorInjection.class);
 			bind(D_UsesProviderInstance.class).toProvider(D_UsesProviderInstance.provider());
 		}
@@ -121,7 +125,7 @@ public class DependencyOrdererTest {
 
 		@Override
 		protected void configure() {
-			bind(E_DefaultConstructor.class);
+			bind(E_DefaultConstructor.class).asEagerSingleton();
 		}
 
 	}
@@ -143,6 +147,17 @@ public class DependencyOrdererTest {
 		this.injector.getInstance(Root_UsesMemberInjection.class);
 	}
 
+	/**
+	 * <pre>
+	 * root --> A -+--> B --+
+	 *             |        |
+	 *             +--------+--> C --+
+	 *             |                 |
+	 *             +-----------------+--> D
+	 *             |
+	 *             +--> E
+	 * </pre>
+	 */
 	@Test
 	public void testDepthFirstOrder() {
 

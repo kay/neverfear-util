@@ -21,22 +21,35 @@ import java.util.HashSet;
 
 import org.neverfear.util.Dependant;
 
+import com.google.inject.Binding;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 
 final class GuiceDependency
 	implements Dependant<GuiceDependency> {
 
+	/**
+	 * 
+	 */
+	private static final IsSingleton IS_SINGLETON_VISITOR = new IsSingleton();
 	private final Collection<GuiceDependency> dependencies = new HashSet<>();
-	private final Key<?> key;
+	private final Binding<?> binding;
 
-	public GuiceDependency(final Key<?> key) {
+	public GuiceDependency(final Binding<?> binding) {
 		super();
-		this.key = key;
+		this.binding = binding;
 	}
 
 	public Key<?> getKey() {
-		return this.key;
+		return this.binding.getKey();
+	}
+
+	public Binding<?> getBinding() {
+		return this.binding;
+	}
+
+	public boolean isSingleton() {
+		return this.binding.acceptScopingVisitor(IS_SINGLETON_VISITOR);
 	}
 
 	@Override
@@ -46,7 +59,7 @@ final class GuiceDependency
 
 	@Override
 	public String toString() {
-		final TypeLiteral<?> typeLiteral = this.key.getTypeLiteral();
+		final TypeLiteral<?> typeLiteral = getKey().getTypeLiteral();
 		if (!this.dependencies.isEmpty()) {
 			return typeLiteral + " depends  on " + this.dependencies;
 		} else {
@@ -62,8 +75,8 @@ final class GuiceDependency
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((this.binding == null) ? 0 : this.binding.hashCode());
 		result = prime * result + ((this.dependencies == null) ? 0 : this.dependencies.hashCode());
-		result = prime * result + ((this.key == null) ? 0 : this.key.hashCode());
 		return result;
 	}
 
@@ -79,18 +92,18 @@ final class GuiceDependency
 			return false;
 		}
 		final GuiceDependency other = (GuiceDependency) obj;
+		if (this.binding == null) {
+			if (other.binding != null) {
+				return false;
+			}
+		} else if (!this.binding.equals(other.binding)) {
+			return false;
+		}
 		if (this.dependencies == null) {
 			if (other.dependencies != null) {
 				return false;
 			}
 		} else if (!this.dependencies.equals(other.dependencies)) {
-			return false;
-		}
-		if (this.key == null) {
-			if (other.key != null) {
-				return false;
-			}
-		} else if (!this.key.equals(other.key)) {
 			return false;
 		}
 		return true;
