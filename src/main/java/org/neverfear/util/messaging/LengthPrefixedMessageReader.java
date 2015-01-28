@@ -64,14 +64,17 @@ public abstract class LengthPrefixedMessageReader
 
 	@Override
 	public byte[] readMessage() throws IOException {
-		if (fillBuffer(this.buffer) < 0) {
-			return null;
+		final int remainingInBuffer = this.buffer.capacity() - this.buffer.remaining();
+		if (remainingInBuffer < Integer.BYTES) {
+			if (fillBuffer(this.buffer) < 0) {
+				return null;
+			}
 		}
 		this.buffer.flip();
 
-		this.offset = 0;
 		final int length = this.buffer.getInt();
 		this.message = new byte[length];
+		this.offset = 0;
 
 		fillMessage();
 
@@ -80,7 +83,7 @@ public abstract class LengthPrefixedMessageReader
 				throw new InterruptedIOException();
 			}
 
-			this.buffer.flip();
+			this.buffer.compact();
 			if (fillBuffer(this.buffer) < 0) {
 				throw new EOFException("EOF reached before message was completely read");
 			}

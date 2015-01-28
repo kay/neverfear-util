@@ -27,7 +27,7 @@ public final class InputStreamLengthPrefixedMessageReader
 	protected int fillBuffer(final ByteBuffer buffer) throws IOException {
 		final int readCount = this.inputStream.read(this.byteArray);
 		if (readCount > 0) {
-			buffer.put(this.byteArray);
+			buffer.put(this.byteArray, 0, readCount);
 		}
 		return readCount;
 	}
