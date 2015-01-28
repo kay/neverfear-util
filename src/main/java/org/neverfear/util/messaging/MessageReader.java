@@ -1,8 +1,10 @@
 package org.neverfear.util.messaging;
 
+import java.io.Closeable;
 import java.io.IOException;
 
-public interface MessageReader {
+public interface MessageReader
+	extends Closeable {
 
 	/**
 	 * Read one complete message. The bytes returned is the payload of each
@@ -13,8 +15,7 @@ public interface MessageReader {
 	 * 
 	 * @return the message payload or null if EOF was reached.
 	 * @throws IOException
-	 * @throws InterruptedException
 	 */
-	byte[] readMessage() throws IOException, InterruptedException;
+	byte[] readMessage() throws IOException;
 
 }

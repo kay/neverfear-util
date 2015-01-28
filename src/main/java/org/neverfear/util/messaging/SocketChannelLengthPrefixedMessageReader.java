@@ -28,6 +28,11 @@ public final class SocketChannelLengthPrefixedMessageReader
 		return this.channel.read(buffer);
 	}
 
+	@Override
+	public void close() throws IOException {
+		this.channel.close();
+	}
+
 	public static void main(final String... strings) throws Exception {
 		final ServerSocketChannel serv = ServerSocketChannel.open();
 		serv.bind(new InetSocketAddress(7896));
@@ -44,6 +49,11 @@ public final class SocketChannelLengthPrefixedMessageReader
 			protected void doWrite(final byte[] message) throws IOException {
 				final ByteBuffer byteBuffer = ByteBuffer.wrap(message);
 				client.write(byteBuffer);
+			}
+
+			@Override
+			public void close() throws IOException {
+				client.close();
 			}
 		};
 
@@ -74,4 +84,5 @@ public final class SocketChannelLengthPrefixedMessageReader
 		System.out.println(new String(codec.readMessage()));
 
 	}
+
 }

@@ -32,4 +32,8 @@ public final class InputStreamLengthPrefixedMessageReader
 		return readCount;
 	}
 
+	@Override
+	public void close() throws IOException {
+		this.inputStream.close();
+	}
 }

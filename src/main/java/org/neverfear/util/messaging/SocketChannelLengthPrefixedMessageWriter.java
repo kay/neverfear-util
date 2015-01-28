@@ -27,4 +27,8 @@ public final class SocketChannelLengthPrefixedMessageWriter
 		this.channel.write(buffer);
 	}
 
+	@Override
+	public void close() throws IOException {
+		this.channel.close();
+	}
 }

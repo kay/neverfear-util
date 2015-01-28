@@ -1,9 +1,11 @@
 package org.neverfear.util.messaging;
 
+import java.io.Closeable;
 import java.io.IOException;
 
-public interface MessageWriter {
+public interface MessageWriter
+	extends Closeable {
 
-	void write(byte[] payload) throws IOException;
+	void write(final byte[] payload) throws IOException;
 
 }

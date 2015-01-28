@@ -113,6 +113,11 @@ public abstract class LengthPrefixedMessageReader
 			public int fillBuffer(final ByteBuffer buffer) throws IOException {
 				return rem.read(buffer);
 			}
+
+			@Override
+			public void close() throws IOException {
+				rem.close();
+			}
 		};
 
 		final MessageWriter writer = new LengthPrefixedMessageWriter(1024) {
@@ -121,6 +126,11 @@ public abstract class LengthPrefixedMessageReader
 			protected void doWrite(final byte[] message) throws IOException {
 				final ByteBuffer byteBuffer = ByteBuffer.wrap(message);
 				client.write(byteBuffer);
+			}
+
+			@Override
+			public void close() throws IOException {
+				client.close();
 			}
 		};
 

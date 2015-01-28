@@ -25,4 +25,9 @@ public class OutputStreamLengthPrefixedMessageWriter
 		this.outputStream.write(message);
 	}
 
+	@Override
+	public void close() throws IOException {
+		this.outputStream.close();
+	}
+
 }
