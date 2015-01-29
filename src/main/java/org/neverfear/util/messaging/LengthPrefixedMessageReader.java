@@ -63,7 +63,7 @@ public abstract class LengthPrefixedMessageReader
 	}
 
 	@Override
-	public byte[] readMessage() throws IOException {
+	public synchronized byte[] readMessage() throws IOException {
 		final int remainingInBuffer = this.buffer.capacity() - this.buffer.remaining();
 		if (remainingInBuffer < Integer.BYTES) {
 			if (fillBuffer(this.buffer) < 0) {

@@ -13,10 +13,10 @@ public abstract class LengthPrefixedMessageWriter
 		this.baos = new ByteArrayOutputStream(size);
 	}
 
-	protected abstract void doWrite(byte[] message) throws IOException;
+	protected abstract void doWrite(final byte[] message) throws IOException;
 
 	@Override
-	public void write(final byte[] payload) throws IOException {
+	public synchronized void write(final byte[] payload) throws IOException {
 		final DataOutputStream dos = new DataOutputStream(this.baos);
 		dos.writeInt(payload.length);
 		dos.write(payload);
