@@ -16,8 +16,7 @@
 package org.neverfear.util;
 
 /**
- * @author doug@neverfear.org
- *
+ * Utility class for manipulating bytes
  */
 public final class Bytes {
 
