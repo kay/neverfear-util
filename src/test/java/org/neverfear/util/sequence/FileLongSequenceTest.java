@@ -29,7 +29,7 @@ import org.neverfear.util.sequence.api.SequenceException;
 /**
  * @author doug@neverfear.org
  */
-public class FileLongSequenceSeriesTest {
+public class FileLongSequenceTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
