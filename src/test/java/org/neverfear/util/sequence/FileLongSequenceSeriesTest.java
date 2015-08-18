@@ -28,59 +28,50 @@ import org.neverfear.util.sequence.api.SequenceException;
 
 /**
  * @author doug@neverfear.org
- * 
  */
-public class FileLongSequenceSeriesTest
-	extends AbstractSequenceSeriesTest {
+public class FileLongSequenceSeriesTest {
 
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-	@Override
-	protected Sequence create() throws Exception {
-		final FileLongSequence sequence = new FileLongSequence(this.temporaryFolder.newFile());
-		sequence.open();
-		return sequence;
-	}
+    @Test
+    public void givenUnopened_whenNext_expectSequenceException() throws Exception {
+        // Given
+        try (final FileLongSequence sequence = new FileLongSequence(this.temporaryFolder.newFile())) {
 
-	@Test
-	public void givenUnopened_whenNext_expectSequenceException() throws Exception {
-		// Given
-		try (final FileLongSequence sequence = new FileLongSequence(this.temporaryFolder.newFile())) {
+            // Then
+            this.expectedException.expect(SequenceException.class);
+            this.expectedException.expectMessage("File is not opened");
 
-			// Then
-			this.expectedException.expect(SequenceException.class);
-			this.expectedException.expectMessage("File is not opened");
+            // When
+            sequence.next();
+        }
+    }
 
-			// When
-			sequence.next();
-		}
-	}
+    @Test
+    public void givenTakenOneThousandSequences_whenCreateNewSequence_expectNextValueIsOneThousand()
+            throws Exception {
+        // Given
+        final File sequenceFile = this.temporaryFolder.newFile();
+        try (final FileLongSequence oldInstance = new FileLongSequence(sequenceFile)) {
+            oldInstance.open();
+            for (int i = 0; i < 1000; i++) {
+                oldInstance.next();
+            }
+        }
 
-	@Test
-	public void givenTakenOneThousandSequences_whenCreateNewSequence_expectNextValueIsOneThousand()
-			throws Exception {
-		// Given
-		final File sequenceFile = this.temporaryFolder.newFile();
-		try (final FileLongSequence oldInstance = new FileLongSequence(sequenceFile)) {
-			oldInstance.open();
-			for (int i = 0; i < 1000; i++) {
-				oldInstance.next();
-			}
-		}
+        // When
+        final long value;
+        try (final FileLongSequence sequence = new FileLongSequence(sequenceFile)) {
+            sequence.open();
+            value = sequence.next();
+        }
 
-		// When
-		final long value;
-		try (final FileLongSequence sequence = new FileLongSequence(sequenceFile)) {
-			sequence.open();
-			value = sequence.next();
-		}
-
-		// Then
-		assertEquals(1000, value);
-	}
+        // Then
+        assertEquals(1000, value);
+    }
 
 }
