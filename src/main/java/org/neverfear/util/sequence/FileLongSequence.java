@@ -27,7 +27,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 
 /**
- * A sequence that uses a file to persist progress.
+ * A sequence that uses a file to persist progress. This is not thread safe.
  * 
  * @author doug@neverfear.org
  * 
@@ -35,6 +35,12 @@ import java.nio.file.StandardOpenOption;
 public class FileLongSequence
 	implements Sequence, Closeable {
 
+	private final ThreadLocal<ByteBuffer> localBuffer = new ThreadLocal<ByteBuffer>() {
+		@Override
+		protected ByteBuffer initialValue() {
+			return ByteBuffer.allocate(Long.BYTES);
+		}
+	};
 	private final File file;
 	private FileChannel channel = null;
 
@@ -65,7 +71,9 @@ public class FileLongSequence
 			throw new SequenceException("File is not opened");
 		}
 
-		final ByteBuffer byteBuffer = ByteBuffer.allocate(Long.BYTES);
+		// TODO: Need a benchmark to prove that ThreadLocal is better than creating a little bit of garbage. Fairly constrained work load here (as this is not thread safe) so should be easy.
+		final ByteBuffer byteBuffer = this.localBuffer.get();
+		byteBuffer.clear();
 		final LongBuffer longBuffer = byteBuffer.asLongBuffer();
 
 		try {
@@ -90,7 +98,7 @@ public class FileLongSequence
 	@Override
 	public void close() throws IOException {
 		if (this.channel == null) {
-			throw new IOException("File is not opened");
+			return;
 		}
 		this.channel.close();
 	}
