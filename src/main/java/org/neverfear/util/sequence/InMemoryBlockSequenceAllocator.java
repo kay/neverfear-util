@@ -43,7 +43,8 @@ public class InMemoryBlockSequenceAllocator
 		final long lastExclusive = firstInclusive + this.length;
 
 		this.index = lastExclusive;
-		return new RangeSequence(firstInclusive,
+		return new RangeSequence(
+				firstInclusive,
 				lastExclusive);
 	}
 
