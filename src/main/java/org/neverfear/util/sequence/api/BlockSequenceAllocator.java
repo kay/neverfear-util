@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.neverfear.util.sequence;
+package org.neverfear.util.sequence.api;
+
+import org.neverfear.util.sequence.AllocationException;
 
 /**
  * @author doug@neverfear.org

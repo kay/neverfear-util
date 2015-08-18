@@ -25,6 +25,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.neverfear.util.sequence.BlockSequence.MinimumPolicy;
+import org.neverfear.util.sequence.api.BlockSequenceAllocator;
+import org.neverfear.util.sequence.api.SequenceException;
 
 /**
  * @author doug@neverfear.org

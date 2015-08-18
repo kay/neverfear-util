@@ -15,6 +15,8 @@
  */
 package org.neverfear.util.sequence;
 
+import org.neverfear.util.sequence.api.Sequence;
+
 import java.util.concurrent.atomic.AtomicLong;
 
 /**

@@ -15,6 +15,9 @@
  */
 package org.neverfear.util.sequence;
 
+import org.neverfear.util.sequence.api.BlockSequenceAllocator;
+import org.neverfear.util.sequence.api.RangeSequence;
+
 /**
  * This allocator creates a new range of a certain size on demand. This is only
  * useful as a testing resource as the {@link BlockSequenceAllocator} are

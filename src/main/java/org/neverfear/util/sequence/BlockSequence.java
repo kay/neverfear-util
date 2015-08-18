@@ -15,6 +15,10 @@
  */
 package org.neverfear.util.sequence;
 
+import org.neverfear.util.sequence.api.BlockSequenceAllocator;
+import org.neverfear.util.sequence.api.RangeSequence;
+import org.neverfear.util.sequence.api.Sequence;
+
 import java.util.LinkedList;
 import java.util.Queue;
 

@@ -23,6 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
+import org.neverfear.util.sequence.api.Sequence;
+import org.neverfear.util.sequence.api.SequenceException;
 
 /**
  * @author doug@neverfear.org

@@ -13,26 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.neverfear.util.sequence;
+package org.neverfear.util.sequence.api;
 
 /**
- * Represents a sequence of long integers where a sequence is defined as an
- * ascending series of values. The exact semantics of a sequence is defined by
- * the implementor. This means they may have gaps between, and may begin at
- * values other than zero.
- * 
  * @author doug@neverfear.org
  * 
  */
-public interface Sequence {
+public class SequenceException
+	extends RuntimeException {
 
-	/**
-	 * Gets the next sequence number.
-	 * 
-	 * @return
-	 * @throws SequenceException if for some reason there is no next value, for
-	 *         instance if the next value would be out of range, or some
-	 *         dependent resource was unavailable.
-	 */
-	long next() throws SequenceException;
+	private static final long serialVersionUID = 1L;
+
+	public SequenceException() {
+		super();
+	}
+
+	public SequenceException(final String message, final Throwable cause) {
+		super(message,
+				cause);
+	}
+
+	public SequenceException(final String message) {
+		super(message);
+	}
+
+	public SequenceException(final Throwable cause) {
+		super(cause);
+	}
+
 }

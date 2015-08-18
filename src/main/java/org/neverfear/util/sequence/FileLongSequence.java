@@ -15,6 +15,9 @@
  */
 package org.neverfear.util.sequence;
 
+import org.neverfear.util.sequence.api.Sequence;
+import org.neverfear.util.sequence.api.SequenceException;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;

@@ -15,6 +15,8 @@
  */
 package org.neverfear.util.sequence;
 
+import org.neverfear.util.sequence.api.Sequence;
+
 /**
  * @author doug@neverfear.org
  * 
