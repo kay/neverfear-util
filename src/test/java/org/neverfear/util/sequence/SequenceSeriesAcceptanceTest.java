@@ -42,7 +42,8 @@ public class SequenceSeriesAcceptanceTest {
         return new Sequence[]{
                 createSingleThreadedLongSequence(),
                 createAtomicLongSequence(),
-                createFileLongSequence()
+                createFileLongSequence(),
+                createConcurrentFileLongSequence()
         };
     }
 
@@ -56,6 +57,12 @@ public class SequenceSeriesAcceptanceTest {
 
     private static FileLongSequence createFileLongSequence() throws Exception {
         final FileLongSequence sequence = new FileLongSequence(temporaryFolder.newFile());
+        sequence.open();
+        return sequence;
+    }
+
+    private static ConcurrentFileLongSequence createConcurrentFileLongSequence() throws Exception {
+        final ConcurrentFileLongSequence sequence = new ConcurrentFileLongSequence(temporaryFolder.newFile());
         sequence.open();
         return sequence;
     }
