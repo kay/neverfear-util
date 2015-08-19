@@ -28,78 +28,69 @@ import java.nio.file.StandardOpenOption;
 
 /**
  * A sequence that uses a file to persist progress. This is not thread safe.
- * 
+ *
  * @author doug@neverfear.org
- * 
  */
 public class FileLongSequence
-	implements Sequence, Closeable {
+        implements Sequence, Closeable {
 
-	private final ThreadLocal<ByteBuffer> localBuffer = new ThreadLocal<ByteBuffer>() {
-		@Override
-		protected ByteBuffer initialValue() {
-			return ByteBuffer.allocate(Long.BYTES);
-		}
-	};
-	private final File file;
-	private FileChannel channel = null;
+    private final ByteBuffer byteBuffer = ByteBuffer.allocate(Long.BYTES);
+    private final LongBuffer longBuffer = byteBuffer.asLongBuffer();
+    private final File file;
+    private FileChannel channel = null;
 
-	public FileLongSequence(final File file) {
-		super();
-		this.file = file;
-	}
+    public FileLongSequence(final File file) {
+        super();
+        this.file = file;
+    }
 
-	public void open() throws IOException {
-		if (this.channel == null) {
-			this.channel = FileChannel.open(this.file.toPath(),
-				StandardOpenOption.CREATE,
-				StandardOpenOption.READ,
-				StandardOpenOption.WRITE);
-			CloseResource.closeOnExit(this.channel);
-			if (this.channel.size() == 0) {
-				final ByteBuffer byteBuffer = ByteBuffer.allocate(Long.BYTES);
-				final LongBuffer longBuffer = byteBuffer.asLongBuffer();
-				longBuffer.put(0);
-				this.channel.write(byteBuffer);
-			}
-		}
-	}
+    public void open() throws IOException {
+        if (this.channel == null) {
+            this.channel = FileChannel.open(this.file.toPath(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.READ,
+                    StandardOpenOption.WRITE);
+            CloseResource.closeOnExit(this.channel);
+            if (this.channel.size() == 0) {
+                this.longBuffer.put(0);
+                this.channel.write(byteBuffer);
+            }
+        }
+    }
 
-	@Override
-	public long next() {
-		if (this.channel == null) {
-			throw new SequenceException("File is not opened");
-		}
+    @Override
+    public long next() {
+        if (this.channel == null) {
+            throw new SequenceException("File is not opened");
+        }
 
-		// TODO: Need a benchmark to prove that ThreadLocal is better than creating a little bit of garbage. Fairly constrained work load here (as this is not thread safe) so should be easy.
-		final ByteBuffer byteBuffer = this.localBuffer.get();
-		byteBuffer.clear();
-		final LongBuffer longBuffer = byteBuffer.asLongBuffer();
+        // TODO: Need a benchmark to prove that ThreadLocal is better than creating a little bit of garbage. Fairly constrained work load here (as this is not thread safe) so should be easy.
+        byteBuffer.clear();
 
-		try {
-			final int readCount = this.channel.read(byteBuffer, 0);
-			if (readCount == -1) {
-				throw new SequenceException("Failed to read buffer");
-			} else if (readCount != byteBuffer.capacity()) {
-				throw new SequenceException("Partial buffer read");
-			}
-			byteBuffer.flip();
+        try {
+            final int readCount = this.channel.read(byteBuffer, 0);
+            if (readCount == -1) {
+                throw new SequenceException("Failed to read buffer");
+            } else if (readCount != byteBuffer.capacity()) {
+                throw new SequenceException("Partial buffer read");
+            }
+            byteBuffer.flip();
 
-			final long value = longBuffer.get(0);
-			longBuffer.put(0, value + 1);
+            final long value = longBuffer.get(0);
+            longBuffer.put(0, value + 1);
 
-			this.channel.write(byteBuffer, 0);
-			return value;
-		} catch (final IOException e) {
-			throw new SequenceException(e);
-		}
-	}
+            this.channel.write(byteBuffer, 0);
+            return value;
+        } catch (final IOException e) {
+            throw new SequenceException(e);
+        }
+    }
 
-	@Override
-	public void close() throws IOException {
-		if (this.channel == null) {
-			return;
-		}
-		this.channel.close();
-	}
+    @Override
+    public void close() throws IOException {
+        if (this.channel == null) {
+            return;
+        }
+        this.channel.close();
+    }
 }
