@@ -15,7 +15,6 @@
  */
 package org.neverfear.util.sequence;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import org.junit.*;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
@@ -23,6 +22,7 @@ import org.junit.experimental.theories.Theory;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.neverfear.util.sequence.api.Sequence;
+import org.neverfear.util.sequence.jdbc.JdbcSequence;
 
 import java.io.Closeable;
 
@@ -43,7 +43,8 @@ public class SequenceSeriesAcceptanceTest {
                 createSingleThreadedLongSequence(),
                 createAtomicLongSequence(),
                 createFileLongSequence(),
-                createConcurrentFileLongSequence()
+                createConcurrentFileLongSequence(),
+                createJdbcSequence()
         };
     }
 
@@ -65,6 +66,13 @@ public class SequenceSeriesAcceptanceTest {
         final ConcurrentFileLongSequence sequence = new ConcurrentFileLongSequence(temporaryFolder.newFile());
         sequence.open();
         return sequence;
+    }
+
+    private static JdbcSequence createJdbcSequence() throws Exception {
+//        final JdbcSequence sequence = new JdbcSequence(temporaryFolder.newFile());
+//        sequence.open();
+//        return sequence;
+        return null;
     }
 
     @Theory
