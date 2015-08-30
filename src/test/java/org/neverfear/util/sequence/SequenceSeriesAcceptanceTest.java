@@ -69,9 +69,9 @@ public class SequenceSeriesAcceptanceTest {
     }
 
     private static JdbcSequence createJdbcSequence() throws Exception {
-//        final JdbcSequence sequence = new JdbcSequence(temporaryFolder.newFile());
-//        sequence.open();
-//        return sequence;
+        final JdbcSequence sequence = new JdbcSequence();
+        sequence.open();
+        return sequence;
         return null;
     }
 
