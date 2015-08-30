@@ -1,12 +1,15 @@
 package org.neverfear.util.sequence.api;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runners.MethodSorters;
 
 import static org.junit.Assert.*;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RangeSequenceTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -107,6 +110,16 @@ public class RangeSequenceTest {
     }
 
     @Test
+    public void givenZeroToFive_andZeroClaimed_whenHasNext_expectTrue() {
+        // Given
+        // When
+        boolean actual = this.zeroToFive.hasNext();
+
+        // Then
+        assertTrue(actual);
+    }
+
+    @Test
     public void givenZeroToFive_andFourClaimed_whenIsExhausted_expectFalse() {
         // Given
         this.zeroToFive.next();
@@ -119,6 +132,20 @@ public class RangeSequenceTest {
 
         // Then
         assertFalse(exhausted);
+    }
+    @Test
+    public void givenZeroToFive_andFourClaimed_whenHasNext_expectTrue() {
+        // Given
+        this.zeroToFive.next();
+        this.zeroToFive.next();
+        this.zeroToFive.next();
+        this.zeroToFive.next();
+
+        // When
+        boolean actual = this.zeroToFive.hasNext();
+
+        // Then
+        assertTrue(actual);
     }
 
     @Test
@@ -135,6 +162,22 @@ public class RangeSequenceTest {
 
         // Then
         assertTrue(exhausted);
+    }
+
+    @Test
+    public void givenZeroToFive_andFiveClaimed_whenHasNext_expectFalse() {
+        // Given
+        this.zeroToFive.next();
+        this.zeroToFive.next();
+        this.zeroToFive.next();
+        this.zeroToFive.next();
+        this.zeroToFive.next();
+
+        // When
+        boolean actual = this.zeroToFive.hasNext();
+
+        // Then
+        assertFalse(actual);
     }
 
     @Test
@@ -271,5 +314,37 @@ public class RangeSequenceTest {
 
         // Then
         assertEquals(1L, seq);
+    }
+
+    @Test
+    public void givenOneToFive_andZeroClaimed_whenToString_expectFirstEqualsOne_andCursorEqualsOne_andLastEqualsFive() {
+        // Given
+        // When
+        String actual = this.oneToFive.toString();
+
+        // Then
+        assertEquals("range 1 <= 1 < 5", actual);
+    }
+    @Test
+    public void givenOneToFive_andOneClaimed_whenToString_expectFirstEqualsOne_andCursorEqualsTwo_andLastEqualsFive() {
+        // Given
+        this.oneToFive.next();
+
+        // When
+        String actual = this.oneToFive.toString();
+
+        // Then
+        assertEquals("range 1 <= 2 < 5", actual);
+    }
+    @Test
+    public void givenOneToFive_andFiveClaimed_whenToString_expectFirstEqualsOne_andCursorEqualsFive_andLastEqualsFive() {
+        // Given
+        this.oneToFive.next();
+
+        // When
+        String actual = this.oneToFive.toString();
+
+        // Then
+        assertEquals("range 1 <= 2 < 5", actual);
     }
 }

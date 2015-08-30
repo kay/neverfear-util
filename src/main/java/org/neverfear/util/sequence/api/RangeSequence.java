@@ -44,6 +44,10 @@ public final class RangeSequence
         return remaining() == 0;
     }
 
+    public boolean hasNext() {
+        return !isExhausted();
+    }
+
     /**
      * The lower bound of the range (inclusive)
      *
