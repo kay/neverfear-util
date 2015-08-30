@@ -22,7 +22,6 @@ public final class RangeSequence
     private final long firstInclusive;
     private final long lastExclusive;
 
-
     private long cursor = 0;
 
     public RangeSequence(final long firstInclusive, final long lastExclusive) {
@@ -69,5 +68,10 @@ public final class RangeSequence
             throw new SequenceException("Range exhausted");
         }
         return this.cursor++;
+    }
+
+    @Override
+    public String toString() {
+        return "range " + this.firstInclusive + " <= " + this.cursor + " < " + this.lastExclusive;
     }
 }
